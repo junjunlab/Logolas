@@ -12,26 +12,26 @@
 #' It defaults to NULL, in which case, the function computes the ic vector using
 #' the \code{ic_computer} functionality.
 #'
-#' @param color_profile A list containing two elements - "type" and "col". 
+#' @param color_profile A list containing two elements - "type" and "col".
 #' The type can be of three types - "per-row", "per-column" and "per-symbol".
 #' The "col" element is a vector of colors, of same length as number of rows
-#' in table for "per-row" (assigning a color to each string), of same length 
-#' as number of columns in table for "per-column" (assuming a color for each 
-#' column), or a distinct color for a distinct symbol in "per-symbol". For 
-#' "per-symbol", the length of the \code{color_profile$col} should be same as 
-#' library size of the logos, but if the vector of colors provided is more or 
-#' less, we can downsample or upsample the colors as required. The colors 
+#' in table for "per-row" (assigning a color to each string), of same length
+#' as number of columns in table for "per-column" (assuming a color for each
+#' column), or a distinct color for a distinct symbol in "per-symbol". For
+#' "per-symbol", the length of the \code{color_profile$col} should be same as
+#' library size of the logos, but if the vector of colors provided is more or
+#' less, we can downsample or upsample the colors as required. The colors
 #' are matched with the symbols in the \code{total_chars}
 #'
 #' @param total_chars The total number of character symbols in the user library.
-#'  The default is the default library provided by Logolas, but the user can 
+#'  The default is the default library provided by Logolas, but the user can
 #'  add symbols that he creates to this list.
 #'
 #' @param bg The background probability, which defaults to NULL, in which case
 #' equal probability is assigned to each symbol. The user can however specify a
 #' vector (equal to in length to the number of symbols) which specifies the
 #' background probability for each symbol and assumes this background probability
-#' to be the same across the columns (sites), or a matrix, whose each cell 
+#' to be the same across the columns (sites), or a matrix, whose each cell
 #' specifies the background probability of the symbols for each position.
 #'
 #'
@@ -70,11 +70,11 @@
 #' @param xlab X axis label
 #' @param ylab Y axis label
 #'
-#' @param col_line_split The color of the line split between the consecutive 
+#' @param col_line_split The color of the line split between the consecutive
 #'                     groups or blocks
 #'
 #' @param addlogos Vector of additional logos/symbols defined by user
-#' @param addlogos_text Vector of the names given to the additional 
+#' @param addlogos_text Vector of the names given to the additional
 #'               logos/symbols defined by user.
 #'
 #'
@@ -101,7 +101,7 @@
 #' @examples
 #'
 #' cols = RColorBrewer::brewer.pal.info[RColorBrewer::brewer.pal.info$category == 'qual',]
-#' col_vector = unlist(mapply(RColorBrewer::brewer.pal, cols$maxcolors, 
+#' col_vector = unlist(mapply(RColorBrewer::brewer.pal, cols$maxcolors,
 #'                          rownames(cols)))
 #' counts_mat <- rbind(c(0, 10, 100, 60, 20),
 #'                    c(40, 30, 30, 35, 20),
@@ -137,7 +137,7 @@
 #' @importFrom graphics par
 #' @importFrom utils modifyList
 #' @export
-#' 
+#'
 plogomaker <- function( table,
                        ic=NULL,
                        color_profile,
@@ -213,7 +213,8 @@ plogomaker <- function( table,
       }
   }
 
-  if (class(table) == "data.frame"){
+
+  if(inherits(table,"data.frame")){
     table <- as.matrix(table)
   }else if (class(table) != "matrix"){
     stop("the table must be of class matrix or data.frame")
@@ -276,19 +277,19 @@ plogomaker <- function( table,
         col <- color_profile$col[letterOrder[i]]
         ht <- hts[letterOrder[i]]
         if(length(intersect(letterOrder[i], slash_inds))!=0){
-          if (ht>0) letters <- addLetter(letters,letter, 
-                                         tofill = control$tofill, 
+          if (ht>0) letters <- addLetter(letters,letter,
+                                         tofill = control$tofill,
                                          lwd = control$lwd, col, total_chars,
-                                         x.pos, y.pos, ht, wt[j], 
+                                         x.pos, y.pos, ht, wt[j],
                                          scale0 = scale0, scale1=scale1,
-                                         addlogos = addlogos, 
+                                         addlogos = addlogos,
                                          addlogos_text = addlogos_text)
         }else{
-          if (ht>0) letters <- addLetter(letters,letter, 
-                                         tofill = control$tofill, 
+          if (ht>0) letters <- addLetter(letters,letter,
+                                         tofill = control$tofill,
                                          lwd = control$lwd, col, total_chars,
-                                         x.pos, y.pos, ht, wt[j], 
-                                         scale0 = scale0, scale1=scale1, 
+                                         x.pos, y.pos, ht, wt[j],
+                                         scale0 = scale0, scale1=scale1,
                                          addlogos = NULL, addlogos_text = NULL)
         }
         y.pos <- y.pos + ht + start
@@ -309,21 +310,21 @@ plogomaker <- function( table,
         letter <- chars[letterOrder[i]]
         ht <- hts[letterOrder[i]]
         if(length(intersect(letterOrder[i], slash_inds))!=0){
-          if (ht>0) letters <- addLetter(letters,letter, 
-                                         tofill = control$tofill, 
+          if (ht>0) letters <- addLetter(letters,letter,
+                                         tofill = control$tofill,
                                          lwd = control$lwd, color_profile$col,
                                          total_chars, x.pos, y.pos, ht, wt[j],
-                                         scale0 = scale0, scale1=scale1, 
-                                         addlogos = addlogos, 
+                                         scale0 = scale0, scale1=scale1,
+                                         addlogos = addlogos,
                                          addlogos_text = addlogos_text)
         }else{
-          if (ht>0) letters <- addLetter(letters,letter, 
+          if (ht>0) letters <- addLetter(letters,letter,
                                          tofill = control$tofill,
-                                         lwd = control$lwd, 
-                                         color_profile$col, 
-                                         total_chars, x.pos, y.pos, 
-                                         ht, wt[j], scale0 = scale0, 
-                                         scale1=scale1, addlogos = NULL, 
+                                         lwd = control$lwd,
+                                         color_profile$col,
+                                         total_chars, x.pos, y.pos,
+                                         ht, wt[j], scale0 = scale0,
+                                         scale1=scale1, addlogos = NULL,
                                          addlogos_text = NULL)
         }
         y.pos <- y.pos + ht + start
@@ -343,21 +344,21 @@ plogomaker <- function( table,
         letter <- chars[letterOrder[i]]
         ht <- hts[letterOrder[i]]
         if(length(intersect(letterOrder[i], slash_inds))!=0){
-          if (ht>0) letters <- addLetter(letters,letter, 
+          if (ht>0) letters <- addLetter(letters,letter,
                                          tofill = control$tofill,
-                                         lwd = control$lwd, 
+                                         lwd = control$lwd,
                                          color_profile$col[j],
                                          total_chars, x.pos, y.pos,
-                                         ht, wt[j], scale0 = scale0, 
-                                         scale1=scale1, addlogos = addlogos, 
+                                         ht, wt[j], scale0 = scale0,
+                                         scale1=scale1, addlogos = addlogos,
                                          addlogos_text = addlogos_text)
         }else{
           if (ht>0) letters <- addLetter(letters,letter,
-                                         tofill = control$tofill, 
-                                         lwd = control$lwd, 
+                                         tofill = control$tofill,
+                                         lwd = control$lwd,
                                          color_profile$col[j],
-                                         total_chars, x.pos, y.pos, 
-                                         ht, wt[j], scale0 = scale0, 
+                                         total_chars, x.pos, y.pos,
+                                         ht, wt[j], scale0 = scale0,
                                          scale1=scale1, addlogos = NULL,
                                          addlogos_text = NULL)
         }
@@ -426,12 +427,12 @@ plogomaker <- function( table,
   grid::pushViewport(grid::dataViewport(0:ncol(table_mat_norm),
                                         0:ylim,name="vp1"))
   if(control$tofill){
-    grid::grid.polygon(x=grid::unit(letters$x,"native"), 
+    grid::grid.polygon(x=grid::unit(letters$x,"native"),
                        y=grid::unit(letters$y,"native"),
                        id=letters$id,
                        gp=grid::gpar(fill=letters$fill, col="transparent"))
   }else{
-    grid::grid.polygon(x=grid::unit(letters$x,"native"), 
+    grid::grid.polygon(x=grid::unit(letters$x,"native"),
                        y=grid::unit(letters$y,"native"),
                        id=letters$id,
                        gp=grid::gpar(col=letters$colfill, lwd = control$lwd))

@@ -4,58 +4,58 @@
 #'  on top of each other to build the logo plot.
 #'
 #' @param table The input table (data frame or matrix) of counts
-#'  across different logos or symbols (specified along the rows) 
-#'  and across different sites or positions or groups (specified 
+#'  across different logos or symbols (specified along the rows)
+#'  and across different sites or positions or groups (specified
 #'  along the columns).
 #'
-#' @param ic Boolean, denoting whether information content based 
-#' scaling is used on top of the scoring scheme used or not. 
+#' @param ic Boolean, denoting whether information content based
+#' scaling is used on top of the scoring scheme used or not.
 #' Default is FALSE
 #'
 #' @param score Can take either of the options - \code{diff},
-#' \code{log}, \code{log-odds}, \code{probKL}, \code{ratio}, 
-#' \code{unscaled_log}, \code{wKL}. Each option corresponds to 
-#'  a different scoring scheme. The most recommended option is 
+#' \code{log}, \code{log-odds}, \code{probKL}, \code{ratio},
+#' \code{unscaled_log}, \code{wKL}. Each option corresponds to
+#'  a different scoring scheme. The most recommended option is
 #'  \code{log}.
 #'
 #' @param color_profile A list containing two elements - "type" and "col".
-#'  The type can be of three types - "per-row", "per-column" and 
+#'  The type can be of three types - "per-row", "per-column" and
 #'  "per-symbol". The "col" element is a vector of colors, of same length
-#'  as number of rows in table for "per-row" (assigning a color to each 
+#'  as number of rows in table for "per-row" (assigning a color to each
 #'  string), of same length as number of columns in table for "per-column"
 #' (assuming a color for each column), or a distinct color for a distinct
-#'  symbol in "per-symbol". For "per-symbol", the length of the 
-#'  \code{color_profile$col} should be same as library size of the logos, 
-#'  but if the vector of colors provided is more or less, we can 
-#'  downsample or upsample the colors as required. The colors are 
+#'  symbol in "per-symbol". For "per-symbol", the length of the
+#'  \code{color_profile$col} should be same as library size of the logos,
+#'  but if the vector of colors provided is more or less, we can
+#'  downsample or upsample the colors as required. The colors are
 #'  matched with the symbols in the \code{total_chars}
 #'
 #' @param total_chars The total number of character symbols in the user
 #'  library. The default is the default library provided by Logolas,
 #'  but the user can add symbols that he creates to this list.
 #'
-#' @param bg The background probability, which defaults to NULL, 
-#' in which case equal probability is assigned to each symbol. The user 
-#' can however specify a vector (equal to in length to the number of 
-#' symbols) which specifies the background probability for each symbol 
-#' and assumes this background probability to be the same across the 
+#' @param bg The background probability, which defaults to NULL,
+#' in which case equal probability is assigned to each symbol. The user
+#' can however specify a vector (equal to in length to the number of
+#' symbols) which specifies the background probability for each symbol
+#' and assumes this background probability to be the same across the
 #' columns (sites), or a matrix, whose each cell specifies
 #' the background probability of the symbols for each position.
-#' 
+#'
 #' @param llambda The log lambda matrix computed after stabilization step (if
 #'                used in \code{logomaker} function). Used for computing the
 #'                heights when not NULL.
-#' @param tol The tolerance for the KL-divergence of the positional weight 
+#' @param tol The tolerance for the KL-divergence of the positional weight
 #'            data and background probabilities (for preclog).
-#'            
-#' @param frame_width The width of the frames for individual 
-#' site/postion/column in the logo plot. As default, all the 
+#'
+#' @param frame_width The width of the frames for individual
+#' site/postion/column in the logo plot. As default, all the
 #' columns have same width, equal to 1.
 #'
-#' @param xaxis Binary specifying if there should be a X axis in 
+#' @param xaxis Binary specifying if there should be a X axis in
 #' the logo plot or not. Defaults to TRUE.
 #'
-#' @param yaxis Binary specifying if there should be a Y axis in 
+#' @param yaxis Binary specifying if there should be a Y axis in
 #' the logo plot or not. Defaults to TRUE.
 #'
 #' @param xaxis_fontsize The size of the X-axis axis ticks.
@@ -68,47 +68,47 @@
 #'
 #' @param yscale_change If TRUE, adjusts the Y axis scale based on
 #'  the size of the bars, else keeps it to the maximum value possible,
-#'  which is \code{ceiling(max(ic)} under \code{ic_computer} 
+#'  which is \code{ceiling(max(ic)} under \code{ic_computer}
 #'  defined IC criteria.
 #'
-#' @param start The starting point in Y axis for the first logo. 
+#' @param start The starting point in Y axis for the first logo.
 #' Default is 0.0001 which is very close to 0.
 #'
 #' @param pop_name User can mention a name of the population for which
-#'  the logo plot is created. Defaults to NULL when no population name 
+#'  the logo plot is created. Defaults to NULL when no population name
 #'  is mentioned.
 #'
 #' @param xlab X axis label
 #' @param ylab Y axis label
 #'
-#' @param col_line_split The color of the line split between the 
+#' @param col_line_split The color of the line split between the
 #' consecutive groups or blocks
 #'
 #' @param yrange The limit of the Y axis.
 #'
 #' @param addlogos Vector of additional logos/symbols defined by user
-#' @param addlogos_text Vector of the names given to the additional 
+#' @param addlogos_text Vector of the names given to the additional
 #' logos/symbols defined by user.
 #'
-#' @param newpage if TRUE, plots the logo plot in a new page. Defaults 
+#' @param newpage if TRUE, plots the logo plot in a new page. Defaults
 #' to TRUE.
 #'
-#' @param control control parameters fixing whether the height of the 
+#' @param control control parameters fixing whether the height of the
 #' logos is detrmined by IC or histogram proportions (\code{hist}),
-#' the scales for the plot (\code{scale0}, \code{scale1}), the quantile 
-#' adjustment (\code{quant}), whether to use symmetric KL for scaling 
-#' (\code{symm}), whether the symbols should be filled with color or 
-#' border colored (\code{tofill_pos, tofill_neg}), the Renyi 
+#' the scales for the plot (\code{scale0}, \code{scale1}), the quantile
+#' adjustment (\code{quant}), whether to use symmetric KL for scaling
+#' (\code{symm}), whether the symbols should be filled with color or
+#' border colored (\code{tofill_pos, tofill_neg}), the Renyi
 #' alpha parameter for the entropy calculation (\code{alpha}), the gap between
 #' ylabel and y-axis and xlabel and x-axis texts (\code{gap_ylab}, \code{gap_xlab}),
-#' the viewport configuration details for the plot 
+#' the viewport configuration details for the plot
 #' (\code{viewport.margin.bottom},\code{viewport.margin.left},
 #'  \code{viewport.margin.top}, \code{viewport.margin.right}),
 #'  whether the height of the logos would be fixed
 #' apriori or determined by the PWM matrix as in seqLogo
 #' (\code{use_seqLogo_heights}) etc.
 #'
-#' @return Plots the logo plot for the table data, with column names 
+#' @return Plots the logo plot for the table data, with column names
 #' representing the sites/blocks and the row names denoting the symbols
 #' for which logos are plotted
 #'
@@ -122,7 +122,7 @@
 
 nlogomaker <- function(table=NULL,
                        ic = FALSE,
-                       score = c("diff", "log", "log-odds", "probKL", 
+                       score = c("diff", "log", "log-odds", "probKL",
                                  "ratio", "unscaled_log", "wKL", "preclog"),
                        color_profile,
                        total_chars = c("A", "B", "C", "D", "E", "F",
@@ -155,13 +155,13 @@ nlogomaker <- function(table=NULL,
                        ylab = "Enrichment Score",
                        col_line_split="grey80",
                        control = list()){
-  
+
   if(is.null(table) && is.null(llambda)){
     stop("Table and llambda (log lambda) matrix cannot both be NULL")
   }
   control.default <- list(hist = FALSE, alpha = 1, opt = 1, scale0=0.01,
                           scale1=0.99, tofill_pos = TRUE, tofill_neg = TRUE,
-                          lwd = 2, 
+                          lwd = 2,
                           quant = 0.5, quant_strategy = "lower",
                           preclog_control=list(),
                           symm = TRUE,
@@ -177,7 +177,7 @@ nlogomaker <- function(table=NULL,
                           viewport.margin.top = NULL,
                           viewport.margin.right = NULL,
                           use_seqLogo_heights = FALSE)
-  
+
   if(nrow(table) %%2 == 0){
     control.default$quant_strategy = "lower"
   }else{
@@ -189,13 +189,13 @@ nlogomaker <- function(table=NULL,
   control <- modifyList(control.default, control)
   scale0 <- control$scale0
   scale1 <- control$scale1
-  
+
   if(length(score) != 1){
     score <- "log"
   }
 
   if(ic & score == "unscaled_log"){
-    warning("ic = TRUE not compatible with score = `unscaled-log`: 
+    warning("ic = TRUE not compatible with score = `unscaled-log`:
             switching to ic = FALSE")
     ic = FALSE
   }
@@ -204,18 +204,18 @@ nlogomaker <- function(table=NULL,
             switching to ic = FALSE")
     ic = FALSE
   }
-  
-  if (class(table) == "data.frame"){
+
+  if(inherits(table,"data.frame")){
     table <- as.matrix(table)
-  }else if (class(table) != "matrix"){
+  }else if (!inherits(table,"matrix")){
     stop("the table must be of class matrix or data.frame")
   }
   chars <- as.character(rownames(table))
   npos <- ncol(table)
-  
-  control_heights <- list(alpha = control$alpha, 
+
+  control_heights <- list(alpha = control$alpha,
                           opt = control$opt, hist = control$hist,
-                          quant = control$quant, 
+                          quant = control$quant,
                           quant_strategy = control$quant_strategy,
                           symm = control$symm)
   ll <- do.call(get_logo_heights, append(list(table = table,
@@ -277,25 +277,25 @@ nlogomaker <- function(table=NULL,
         col <- color_profile$col[letterOrder[i]]
         ht <- hts[letterOrder[i]]
         if(length(intersect(letterOrder[i], slash_inds))!=0){
-          if (ht>0) letters <- addLetter_n(letters,letter, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
                                            tofill = control$tofill_pos,
                                            lwd = control$lwd,
                                            col, total_chars, x.pos,
-                                           y.pos, ht, wt[j], 
-                                           scale0 = scale0, 
-                                           scale1=scale1, 
+                                           y.pos, ht, wt[j],
+                                           scale0 = scale0,
+                                           scale1=scale1,
                                            addlogos = addlogos,
                                            addlogos_text = addlogos_text)
         }else{
-          if (ht>0) letters <- addLetter_n(letters,letter, 
-                                           tofill = control$tofill_pos, 
-                                           lwd = control$lwd, 
-                                           col, total_chars, 
-                                           x.pos, y.pos, 
-                                           ht, wt[j], 
-                                           scale0 = scale0, 
-                                           scale1=scale1, 
-                                           addlogos = NULL, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
+                                           tofill = control$tofill_pos,
+                                           lwd = control$lwd,
+                                           col, total_chars,
+                                           x.pos, y.pos,
+                                           ht, wt[j],
+                                           scale0 = scale0,
+                                           scale1=scale1,
+                                           addlogos = NULL,
                                            addlogos_text = NULL)
         }
         y.pos <- y.pos + ht + start
@@ -338,23 +338,23 @@ nlogomaker <- function(table=NULL,
         letter <- chars[letterOrder[i]]
         ht <- hts[letterOrder[i]]
         if(length(intersect(letterOrder[i], slash_inds))!=0){
-          if (ht>0) letters <- addLetter_n(letters,letter, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
                                            tofill = control$tofill_pos,
-                                           lwd = control$lwd, 
+                                           lwd = control$lwd,
                                            color_profile$col[j],
-                                           total_chars, 
-                                           x.pos, y.pos, ht, wt[j], 
+                                           total_chars,
+                                           x.pos, y.pos, ht, wt[j],
                                            scale0 = scale0, scale1=scale1,
-                                           addlogos = addlogos, 
+                                           addlogos = addlogos,
                                            addlogos_text = addlogos_text)
         }else{
-          if (ht>0) letters <- addLetter_n(letters,letter, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
                                            tofill = control$tofill_pos,
-                                           lwd = control$lwd, 
-                                           color_profile$col[j], 
-                                           total_chars, x.pos, y.pos, 
+                                           lwd = control$lwd,
+                                           color_profile$col[j],
+                                           total_chars, x.pos, y.pos,
                                            ht, wt[j], scale0 = scale0,
-                                           scale1=scale1, addlogos = NULL, 
+                                           scale1=scale1, addlogos = NULL,
                                            addlogos_text = NULL)
         }
         y.pos <- y.pos + ht + start
@@ -389,7 +389,7 @@ nlogomaker <- function(table=NULL,
   #   }
   # }
  # yrange <- ceiling(max(max(pos_ic), control$uprange) + max(max(neg_ic), control$lowrange))
-  yrange <- max(max(pos_ic), control$uprange) + max(max(neg_ic), 
+  yrange <- max(max(pos_ic), control$uprange) + max(max(neg_ic),
                                                     control$lowrange)
   ylim <- yrange
   # print(pos_ic)
@@ -401,7 +401,7 @@ nlogomaker <- function(table=NULL,
     negbins <- control$negbins
     posbins <- control$posbins
 
-   
+
    ic_lim_scale <- c(seq(0, y1, length.out = negbins),
                     seq(y1, ylim, length.out = posbins))
  # print(ic_lim_scale)
@@ -469,15 +469,15 @@ nlogomaker <- function(table=NULL,
   if(control$tofill_pos){
     # grid::grid.polygon(x=grid::unit(letters$x,"native"), y=grid::unit(letters$y,"native"),
     #                    id=letters$id, gp=grid::gpar(fill=letters$fill,col="transparent"))
-    grid::grid.polygon(x=grid::unit(letters$x,"native"), 
+    grid::grid.polygon(x=grid::unit(letters$x,"native"),
                        y=grid::unit(letters$y,"native"),
                        id=letters$id,
                        gp=grid::gpar(fill=letters$fill, col="transparent"))
   }else{
-    grid::grid.polygon(x=grid::unit(letters$x,"native"), 
+    grid::grid.polygon(x=grid::unit(letters$x,"native"),
                        y=grid::unit(letters$y,"native"),
                        id=letters$id,
-                       gp=grid::gpar(col=letters$colfill, 
+                       gp=grid::gpar(col=letters$colfill,
                                      lwd = control$lwd))
   }
 
@@ -497,11 +497,11 @@ nlogomaker <- function(table=NULL,
 
   if(is.null(pop_name)){
     if(ic){
-      grid::grid.text(paste0("EDLogo plot: (",score,"-ic",  ")"), 
+      grid::grid.text(paste0("EDLogo plot: (",score,"-ic",  ")"),
                       y = grid::unit(control$npc_units_main, "npc") + grid::unit(control$lines_units_main, "lines"),
                       gp = grid::gpar(fontsize = main_fontsize))
     }else{
-      grid::grid.text(paste0("EDLogo plot: (",score, ")"), 
+      grid::grid.text(paste0("EDLogo plot: (",score, ")"),
                       y = grid::unit(control$npc_units_main, "npc") + grid::unit(control$lines_units_main, "lines"),
                       gp = grid::gpar(fontsize = main_fontsize))
     }
@@ -571,18 +571,18 @@ nlogomaker <- function(table=NULL,
         col <- color_profile$col[letterOrder[i]]
         ht <- hts[letterOrder[i]]
         if(length(intersect(letterOrder[i], slash_inds))!=0){
-          if (ht>0) letters <- addLetter_n(letters,letter, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
                                            tofill = control$tofill_neg,
-                                           lwd = control$lwd, 
-                                           col, total_chars, 
-                                           x.pos, y.pos, ht, wt[j], 
-                                           scale0 = scale0, scale1=scale1, 
-                                           addlogos = addlogos, 
+                                           lwd = control$lwd,
+                                           col, total_chars,
+                                           x.pos, y.pos, ht, wt[j],
+                                           scale0 = scale0, scale1=scale1,
+                                           addlogos = addlogos,
                                            addlogos_text = addlogos_text)
         }else{
-          if (ht>0) letters <- addLetter_n(letters,letter, 
-                                           tofill = control$tofill_neg, 
-                                           lwd = control$lwd, col, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
+                                           tofill = control$tofill_neg,
+                                           lwd = control$lwd, col,
                                            total_chars, x.pos, y.pos,
                                            ht, wt[j], scale0 = scale0,
                                            scale1=scale1, addlogos = NULL,
@@ -606,23 +606,23 @@ nlogomaker <- function(table=NULL,
         letter <- chars[letterOrder[i]]
         ht <- hts[letterOrder[i]]
         if(length(intersect(letterOrder[i], slash_inds))!=0){
-          if (ht>0) letters <- addLetter_n(letters,letter, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
                                            tofill = control$tofill_neg,
-                                           lwd = control$lwd, 
-                                           color_profile$col, 
+                                           lwd = control$lwd,
+                                           color_profile$col,
                                            total_chars, x.pos, y.pos,
-                                           ht, wt[j], scale0 = scale0, 
-                                           scale1=scale1, 
-                                           addlogos = addlogos, 
+                                           ht, wt[j], scale0 = scale0,
+                                           scale1=scale1,
+                                           addlogos = addlogos,
                                            addlogos_text = addlogos_text)
         }else{
-          if (ht>0) letters <- addLetter_n(letters,letter, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
                                            tofill = control$tofill_neg,
-                                           lwd = control$lwd, 
+                                           lwd = control$lwd,
                                            color_profile$col, total_chars,
                                            x.pos, y.pos, ht, wt[j],
                                            scale0 = scale0, scale1=scale1,
-                                           addlogos = NULL, 
+                                           addlogos = NULL,
                                            addlogos_text = NULL)
         }
         y.pos <- y.pos + ht + start
@@ -642,22 +642,22 @@ nlogomaker <- function(table=NULL,
         letter <- chars[letterOrder[i]]
         ht <- hts[letterOrder[i]]
         if(length(intersect(letterOrder[i], slash_inds))!=0){
-          if (ht>0) letters <- addLetter_n(letters,letter, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
                                            tofill = control$tofill_neg,
-                                           lwd = control$lwd, 
-                                           color_profile$col[j], 
+                                           lwd = control$lwd,
+                                           color_profile$col[j],
                                            total_chars, x.pos, y.pos,
-                                           ht, wt[j], scale0 = scale0, 
+                                           ht, wt[j], scale0 = scale0,
                                            scale1=scale1, addlogos = addlogos,
                                            addlogos_text = addlogos_text)
         }else{
-          if (ht>0) letters <- addLetter_n(letters,letter, 
+          if (ht>0) letters <- addLetter_n(letters,letter,
                                            tofill = control$tofill_neg,
-                                           lwd = control$lwd, 
+                                           lwd = control$lwd,
                                            color_profile$col[j],
                                            total_chars, x.pos, y.pos,
-                                           ht, wt[j], scale0 = scale0, 
-                                           scale1=scale1, addlogos = NULL, 
+                                           ht, wt[j], scale0 = scale0,
+                                           scale1=scale1, addlogos = NULL,
                                            addlogos_text = NULL)
         }
         y.pos <- y.pos + ht + start
@@ -685,16 +685,16 @@ nlogomaker <- function(table=NULL,
   if(control$tofill_neg){
     # grid::grid.polygon(x=grid::unit(letters$x,"native"), y=grid::unit(letters$y,"native"),
     #                    id=letters$id, gp=grid::gpar(fill=letters$fill,col="transparent"))
-    grid::grid.polygon(x=grid::unit(letters$x,"native"), 
+    grid::grid.polygon(x=grid::unit(letters$x,"native"),
                        y=grid::unit(letters$y,"native"),
                        id=letters$id,
-                       gp=grid::gpar(fill=letters$fill, 
+                       gp=grid::gpar(fill=letters$fill,
                                      col="transparent"))
   }else{
-    grid::grid.polygon(x=grid::unit(letters$x,"native"), 
+    grid::grid.polygon(x=grid::unit(letters$x,"native"),
                        y=grid::unit(letters$y,"native"),
                        id=letters$id,
-                       gp=grid::gpar(col=letters$colfill, 
+                       gp=grid::gpar(col=letters$colfill,
                                      lwd = control$lwd))
   }
 

@@ -1,6 +1,6 @@
 #' @title Get heights of logos in nlogomaker() under different scoring schemes
 #'
-#' @description Generates total heights of the stack of logos in the positive 
+#' @description Generates total heights of the stack of logos in the positive
 #' and negative
 #' scales of the nlogomaker() logo plot along with the proportion of the height
 #' distributed between the logos to be plotted in the positive and the negative
@@ -15,29 +15,29 @@
 #' on top of the scoring scheme used or not. Default is FALSE
 #'
 #' @param score Can take either of the options - \code{diff},
-#' \code{log}, \code{log-odds}, \code{probKL}, \code{ratio}, 
+#' \code{log}, \code{log-odds}, \code{probKL}, \code{ratio},
 #' \code{unscaled_log},
 #' \code{wKL}. Each option corresponds to a different scoring scheme. The most
 #  recommended option is \code{log}.
 #' @param bg The background probability, which defaults to NULL, in which case
 #' equal probability is assigned to each symbol. The user can however specify a
 #' vector (equal to in length to the number of symbols) which specifies the
-#' background probability for each symbol and assumes this background 
-#' probability to be the same across the columns (sites), or a matrix, 
-#' whose each cell specifies the background probability of the symbols 
+#' background probability for each symbol and assumes this background
+#' probability to be the same across the columns (sites), or a matrix,
+#' whose each cell specifies the background probability of the symbols
 #' for each position.
-#' 
+#'
 #' @param llambda The log lambda matrix computed after stabilization step (if
 #'                used in \code{logomaker} function). Used for computing the
 #'                heights when not NULL.
-#' @param tol The tolerance for the KL-divergence of the positional weight 
+#' @param tol The tolerance for the KL-divergence of the positional weight
 #'            data and background probabilities.
 #'
 #' @param opt Option parameter - taking values 1 and 2 - depending on whether
-#' median adjustment is done based on background corrected proportions or 
+#' median adjustment is done based on background corrected proportions or
 #' without background correction.
 #'
-#' @param symm A bool input, which if TRUE, the function uses symmetric KL 
+#' @param symm A bool input, which if TRUE, the function uses symmetric KL
 #' divergence whereas if FALSE, the function uses non-symmetric KL divergence.
 #'
 #' @param alpha The Renyi entropy tuning parameter which is used in case of
@@ -49,13 +49,13 @@
 #'
 #' @param quant The quantile to be adjusted for in computing enrichment and
 #' depletion scores. Defaults to 0.5, which corresponds to the median.
-#' 
+#'
 #' @param quant_strategy Strategy used for quantile computation. For the default,
 #' \code{quant_strategy = "center"}, the normal quantile is taken, which would
-#' correspond to the middle point of the quantile interval. If  
+#' correspond to the middle point of the quantile interval. If
 #' \code{quant_strategy = "lower"}, the lower limit of the quantile interval is
 #' taken and if  \code{quant_strategy = "upper"}, the upper limit of the quantile
-#' interval is considered. 
+#' interval is considered.
 #'
 #' @importFrom  stats quantile
 #'
@@ -73,7 +73,7 @@
 #' colnames(m) = 1:12
 #' m=m/8
 #' get_logo_heights(m, score = "log")
-#' 
+#'
 #' @import CVXR
 #' @export
 
@@ -87,23 +87,23 @@ get_logo_heights <- function (table,
                               opt=1, symm = TRUE,
                               alpha = 1, hist=FALSE, quant = 0.5,
                               quant_strategy = "lower"){
-  
+
 
   table_pre <- table
   table_pre <- apply(table_pre, 2, normalize4)
-  
+
   if(ic & score == "unscaled_log"){
     warning("ic = TRUE not compatible with score = `unscaled-log`: switching to
             ic = FALSE")
     ic = FALSE
   }
   if(ic & score == "wKL"){
-    warning("ic = TRUE not compatible with score = `wKL`: switching to 
+    warning("ic = TRUE not compatible with score = `wKL`: switching to
             ic = FALSE")
     ic = FALSE
   }
   if(length(score) != 1){
-    stop("score can be either diff, log, log-odds, probKL, ratio, 
+    stop("score can be either diff, log, log-odds, probKL, ratio,
          unscaled_log or wKL")
   }
   if(score == "preclog"){
@@ -141,9 +141,9 @@ get_logo_heights <- function (table,
     bgmat <- apply(bgmat, 2, function(x) return(x/sum(x[!is.na(x)])))
   }
 
-  if (class(table) == "data.frame"){
+  if(inherits(table,"data.frame")){
     table <- as.matrix(table)
-  }else if (class(table) != "matrix"){
+  }else if (!inherits(table,"matrix")){
     stop("the table must be of class matrix or data.frame")
   }
   table_mat_norm <-  apply(table, 2, function(x) return(x/sum(x[!is.na(x)])))
@@ -155,7 +155,7 @@ get_logo_heights <- function (table,
 
   if(!ic){
     if (score == "diff"){
-      table_mat_adj <- apply((table_mat_norm) - (bgmat), 
+      table_mat_adj <- apply((table_mat_norm) - (bgmat),
                              2, function(x)
       {
         indices <- which(is.na(x))
@@ -213,21 +213,21 @@ get_logo_heights <- function (table,
         }
       })
     }else if (score == "preclog"){
-      
+
       if(!is.null(llambda)){
         table_mat_norm <- exp(llambda)*bgmat
         table_mat_norm <- apply(table_mat_norm,2,normalize4)
       }
-      
+
       llambda_mat <- matrix(NA, nrow(table_mat_norm), ncol(table_mat_norm))
-      
+
       for(m in 1:ncol(table_mat_norm)){
         pp <- table_mat_norm[,m]
         qq <- bgmat[,m]
         noNA_indices <- which(!is.na(pp))
         pp <- pp[!is.na(pp)]
         qq <- qq[!is.na(qq)]
-        kldiv <- sum(pp*log(pp/qq)) 
+        kldiv <- sum(pp*log(pp/qq))
         tol <- preclog_control$tol
         llambda <- CVXR::Variable(length(pp))
         objective <- CVXR::Minimize(sum(CVXR::p_norm(llambda,1)))
@@ -236,7 +236,7 @@ get_logo_heights <- function (table,
         result <- solve(problem, solver=preclog_control$solver)
         llambda_mat[noNA_indices,m] <- result$getValue(llambda)
       }
-      
+
       table_mat_adj <- apply(llambda_mat, 2, function(x)
      {
        indices <- which(is.na(x))
@@ -266,7 +266,7 @@ get_logo_heights <- function (table,
     }else if (score == "log-odds"){
 
       if(opt == 1){
-        table_mat_adj <- apply((table_mat_norm)/(bgmat), 
+        table_mat_adj <- apply((table_mat_norm)/(bgmat),
                                2, function(x)
         {
           indices <- which(is.na(x))
@@ -345,7 +345,7 @@ get_logo_heights <- function (table,
         }
       })
     }else if (score == "ratio"){
-      table_mat_adj <- apply((table_mat_norm)/(bgmat), 
+      table_mat_adj <- apply((table_mat_norm)/(bgmat),
                              2, function(x)
       {
         indices <- which(is.na(x))
@@ -373,8 +373,8 @@ get_logo_heights <- function (table,
         }
       })
     }else if (score == "unscaled_log"){
-      table_mat_adj <- apply(log((table_mat_norm)/(bgmat), 
-                                 base=2), 
+      table_mat_adj <- apply(log((table_mat_norm)/(bgmat),
+                                 base=2),
                              2, function(x)
       {
         indices <- which(is.na(x))
@@ -402,7 +402,7 @@ get_logo_heights <- function (table,
         }
       })
     }else if (score == "wKL"){
-      table_mat_adj <- apply(log((table_mat_norm)/(bgmat), 
+      table_mat_adj <- apply(log((table_mat_norm)/(bgmat),
                                  base=2),
                                2, function(x)
       {
@@ -438,7 +438,7 @@ get_logo_heights <- function (table,
   }else{
     if(score == "diff"){
       if(opt == 1){
-        table_mat_adj <- apply((table_mat_norm) - (bgmat), 
+        table_mat_adj <- apply((table_mat_norm) - (bgmat),
                                2, function(x)
         {
           indices <- which(is.na(x))
@@ -515,7 +515,7 @@ get_logo_heights <- function (table,
           }
         })
       }else{
-        table_mat_adj <- apply(log(table_mat_norm, base=2), 
+        table_mat_adj <- apply(log(table_mat_norm, base=2),
                                2, function(x)
         {
           indices <- which(is.na(x))
@@ -534,21 +534,21 @@ get_logo_heights <- function (table,
         })
       }
     }else if (score == "preclog"){
-      
+
       if(!is.null(llambda)){
         table_mat_norm <- exp(llambda)*bgmat
         table_mat_norm <- apply(table_mat_norm,2,normalize4)
       }
-      
+
       llambda_mat <- matrix(NA, nrow(table_mat_norm), ncol(table_mat_norm))
-      
+
       for(m in 1:ncol(table_mat_norm)){
         pp <- table_mat_norm[,m]
         qq <- bgmat[,m]
         noNA_indices <- which(!is.na(pp))
         pp <- pp[!is.na(pp)]
         qq <- qq[!is.na(qq)]
-        kldiv <- sum(pp*log(pp/qq)) 
+        kldiv <- sum(pp*log(pp/qq))
         tol <- preclog_control$tol
         llambda <- CVXR::Variable(length(pp))
         objective <- CVXR::Minimize(sum(CVXR::p_norm(llambda,1)))
@@ -557,7 +557,7 @@ get_logo_heights <- function (table,
         result <- solve(problem, solver=preclog_control$solver)
         llambda_mat[noNA_indices,m] <- result$getValue(llambda)
       }
-      
+
       table_mat_adj <- apply(llambda_mat, 2, function(x)
       {
         indices <- which(is.na(x))
@@ -586,7 +586,7 @@ get_logo_heights <- function (table,
       })
     }else if (score == "log-odds"){
       if(opt == 1){
-        table_mat_adj <- apply((table_mat_norm)/(bgmat), 
+        table_mat_adj <- apply((table_mat_norm)/(bgmat),
                                2, function(x)
         {
           indices <- which(is.na(x))
@@ -668,7 +668,7 @@ get_logo_heights <- function (table,
           }
         })
       }else{
-        table_mat_adj <- apply((table_mat_norm)*log(table_mat_norm, 
+        table_mat_adj <- apply((table_mat_norm)*log(table_mat_norm,
                                                 base=2), 2, function(x)
         {
           indices <- which(is.na(x))
@@ -689,7 +689,7 @@ get_logo_heights <- function (table,
 
     }else if (score == "ratio"){
       if(opt == 1){
-        table_mat_adj <- apply((table_mat_norm)/(bgmat), 
+        table_mat_adj <- apply((table_mat_norm)/(bgmat),
                                2, function(x)
         {
           indices <- which(is.na(x))
@@ -744,13 +744,13 @@ get_logo_heights <- function (table,
 
     table_mat_pos <- table_mat_adj
     table_mat_pos[table_mat_pos<= 0] = 0
-    table_mat_pos_norm  <- apply(table_mat_pos, 2, 
+    table_mat_pos_norm  <- apply(table_mat_pos, 2,
                                  function(x) return(x/sum(x)))
     table_mat_pos_norm[table_mat_pos_norm == "NaN"] = 0
 
     table_mat_neg <- table_mat_adj
     table_mat_neg[table_mat_neg >= 0] = 0
-    table_mat_neg_norm  <- apply(abs(table_mat_neg), 2, 
+    table_mat_neg_norm  <- apply(abs(table_mat_neg), 2,
                                  function(x) return(x/sum(x)))
     table_mat_neg_norm[table_mat_neg_norm == "NaN"] = 0
 
@@ -767,13 +767,13 @@ get_logo_heights <- function (table,
   }else{
     table_mat_pos <- table_mat_adj
     table_mat_pos[table_mat_pos<= 0] = 0
-    table_mat_pos_norm  <- apply(table_mat_pos, 2, 
+    table_mat_pos_norm  <- apply(table_mat_pos, 2,
                                  function(x) return(x/sum(x)))
     table_mat_pos_norm[table_mat_pos_norm == "NaN"] = 0
 
     table_mat_neg <- table_mat_adj
     table_mat_neg[table_mat_neg >= 0] = 0
-    table_mat_neg_norm  <- apply(table_mat_neg, 2, 
+    table_mat_neg_norm  <- apply(table_mat_neg, 2,
                                  function(x) return(x/sum(x)))
     table_mat_neg_norm[table_mat_neg_norm == "NaN"] = 0
 
@@ -793,9 +793,9 @@ get_logo_heights <- function (table,
 
     if(symm==TRUE){
       table_mat_norm[which(is.na(table))] <- NA
-      ic <- 0.5*(ic_computer(table_mat_norm, alpha,  
-                             hist=hist, bg = bgmat) 
-                 + ic_computer(bgmat, alpha, 
+      ic <- 0.5*(ic_computer(table_mat_norm, alpha,
+                             hist=hist, bg = bgmat)
+                 + ic_computer(bgmat, alpha,
                                hist=hist, bg = table_mat_norm))
     }else{
       table_mat_norm[which(is.na(table))] <- NA

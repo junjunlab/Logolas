@@ -17,7 +17,7 @@
 # @return Returns the enrichment heights in the positive and the negative scale.
 #   \code{pos}: scaling on the positive scale
 #   \code{neg}: scaling on the negative scale
-#   \code{scales}: the scaling factor for each site positive and negative 
+#   \code{scales}: the scaling factor for each site positive and negative
 #                  heights
 #   \code{ic_pos}: height of the positive bar
 #   \code{ic_neg}: height of the negative bar
@@ -45,9 +45,9 @@ neg_ic_computer <- function (table,
 
   table <- apply(table+0.0001,2,normalize)
 
-  if (class(table) == "data.frame"){
+  if (inherits(table,"data.frame")){
     table <- as.matrix(table)
-  }else if (class(table) != "matrix"){
+  }else if (!inherits(table,"matrix")){
     stop("the table must be of class matrix or data.frame")
   }
 
@@ -103,7 +103,7 @@ neg_ic_computer <- function (table,
     }
   })
 
-  pos_neg_scaling <- apply(rbind(tab_pos, tab_neg), 2, 
+  pos_neg_scaling <- apply(rbind(tab_pos, tab_neg), 2,
                            function(x) return(x/sum(x)))
 
   scaled_tab_mat_pos_norm <- table_mat_pos_norm %*% diag(pos_neg_scaling[1,])
