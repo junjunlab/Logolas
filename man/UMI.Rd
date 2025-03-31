@@ -8,7 +8,9 @@ positions from ends of sequenced
 reads (together with the barcode)
 A dataset of composition probabilities of A, C, G and T in 30 positions 
 from the 5' end of reads.}
-\format{A matrix with 4 rows and 30 columns}
+\format{
+A matrix with 4 rows and 30 columns
+}
 \usage{
 UMI
 }

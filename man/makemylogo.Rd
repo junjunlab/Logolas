@@ -4,12 +4,19 @@
 \alias{makemylogo}
 \title{Logo maker for a given English alphanumeric with common punctuations}
 \usage{
-makemylogo(name, tofill = TRUE, colfill = "orange", lwd = 10,
-  plot = FALSE, total_chars = c("A", "B", "C", "D", "E", "F", "G", "H",
-  "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
-  "W", "X", "Y", "Z", "zero", "one", "two", "three", "four", "five", "six",
-  "seven", "eight", "nine", "dot", "comma", "dash", "colon", "semicolon",
-  "leftarrow", "rightarrow"), addlogos = NULL, addlogos_text = NULL)
+makemylogo(
+  name,
+  tofill = TRUE,
+  colfill = "orange",
+  lwd = 10,
+  plot = FALSE,
+  total_chars = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+    "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "zero", "one", "two",
+    "three", "four", "five", "six", "seven", "eight", "nine", "dot", "comma", "dash",
+    "colon", "semicolon", "leftarrow", "rightarrow"),
+  addlogos = NULL,
+  addlogos_text = NULL
+)
 }
 \arguments{
 \item{name}{A English name, or alphanumeric, containing English alphabets,

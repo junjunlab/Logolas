@@ -5,7 +5,9 @@
 \alias{ELF1}
 \title{ELF1 initiation contexts in metazoa, fungi and plants. 
 The data has been fetched from Ivanov et al 2012.}
-\format{A list of 3 matrices, each matrix with 4 rows and 15 columns}
+\format{
+A list of 3 matrices, each matrix with 4 rows and 15 columns
+}
 \usage{
 ELF1
 }

@@ -4,10 +4,21 @@
 \alias{get_logo_heights}
 \title{Get heights of logos in nlogomaker() under different scoring schemes}
 \usage{
-get_logo_heights(table, ic = FALSE, score = c("diff", "log",
-  "log-odds", "probKL", "ratio", "unscaled_log", "wKL", "preclog"),
-  llambda = NULL, bg = NULL, tol = 0, opt = 1, symm = TRUE,
-  alpha = 1, hist = FALSE, quant = 0.5, quant_strategy = "lower")
+get_logo_heights(
+  table,
+  ic = FALSE,
+  score = c("diff", "log", "log-odds", "probKL", "ratio", "unscaled_log", "wKL",
+    "preclog"),
+  llambda = NULL,
+  bg = NULL,
+  tol = 0,
+  opt = 1,
+  symm = TRUE,
+  alpha = 1,
+  hist = FALSE,
+  quant = 0.5,
+  quant_strategy = "lower"
+)
 }
 \arguments{
 \item{table}{The input table (data frame or matrix) of compositional counts
@@ -19,7 +30,7 @@ the rows) for different sites or positions or groups
 on top of the scoring scheme used or not. Default is FALSE}
 
 \item{score}{Can take either of the options - \code{diff},
-\code{log}, \code{log-odds}, \code{probKL}, \code{ratio}, 
+\code{log}, \code{log-odds}, \code{probKL}, \code{ratio},
 \code{unscaled_log},
 \code{wKL}. Each option corresponds to a different scoring scheme. The most}
 
@@ -30,19 +41,19 @@ heights when not NULL.}
 \item{bg}{The background probability, which defaults to NULL, in which case
 equal probability is assigned to each symbol. The user can however specify a
 vector (equal to in length to the number of symbols) which specifies the
-background probability for each symbol and assumes this background 
-probability to be the same across the columns (sites), or a matrix, 
-whose each cell specifies the background probability of the symbols 
+background probability for each symbol and assumes this background
+probability to be the same across the columns (sites), or a matrix,
+whose each cell specifies the background probability of the symbols
 for each position.}
 
-\item{tol}{The tolerance for the KL-divergence of the positional weight 
+\item{tol}{The tolerance for the KL-divergence of the positional weight
 data and background probabilities.}
 
 \item{opt}{Option parameter - taking values 1 and 2 - depending on whether
-median adjustment is done based on background corrected proportions or 
+median adjustment is done based on background corrected proportions or
 without background correction.}
 
-\item{symm}{A bool input, which if TRUE, the function uses symmetric KL 
+\item{symm}{A bool input, which if TRUE, the function uses symmetric KL
 divergence whereas if FALSE, the function uses non-symmetric KL divergence.}
 
 \item{alpha}{The Renyi entropy tuning parameter which is used in case of
@@ -57,7 +68,7 @@ depletion scores. Defaults to 0.5, which corresponds to the median.}
 
 \item{quant_strategy}{Strategy used for quantile computation. For the default,
 \code{quant_strategy = "center"}, the normal quantile is taken, which would
-correspond to the middle point of the quantile interval. If  
+correspond to the middle point of the quantile interval. If
 \code{quant_strategy = "lower"}, the lower limit of the quantile interval is
 taken and if  \code{quant_strategy = "upper"}, the upper limit of the quantile
 interval is considered.}
@@ -67,7 +78,7 @@ Returns the heights of enrichment and depletion for
 diff approach to EDLogo.
 }
 \description{
-Generates total heights of the stack of logos in the positive 
+Generates total heights of the stack of logos in the positive
 and negative
 scales of the nlogomaker() logo plot along with the proportion of the height
 distributed between the logos to be plotted in the positive and the negative

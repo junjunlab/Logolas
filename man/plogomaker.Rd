@@ -4,17 +4,34 @@
 \alias{plogomaker}
 \title{Main workhorse function that builds the positive logo plots}
 \usage{
-plogomaker(table, ic = NULL, color_profile, total_chars = c("A", "B",
-  "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P",
-  "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "zero", "one", "two",
-  "three", "four", "five", "six", "seven", "eight", "nine", "dot", "comma",
-  "dash", "colon", "semicolon", "leftarrow", "rightarrow"), bg = NULL,
-  frame_width = NULL, ic.scale = TRUE, xaxis = TRUE, yaxis = TRUE,
-  xaxis_fontsize = 10, xlab_fontsize = 15, y_fontsize = 15,
-  main_fontsize = 16, start = 0.001, yscale_change = TRUE,
-  pop_name = NULL, xlab = "X", ylab = "Information content",
-  col_line_split = "grey80", addlogos = NULL, addlogos_text = NULL,
-  newpage = TRUE, control = list())
+plogomaker(
+  table,
+  ic = NULL,
+  color_profile,
+  total_chars = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+    "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "zero", "one", "two",
+    "three", "four", "five", "six", "seven", "eight", "nine", "dot", "comma", "dash",
+    "colon", "semicolon", "leftarrow", "rightarrow"),
+  bg = NULL,
+  frame_width = NULL,
+  ic.scale = TRUE,
+  xaxis = TRUE,
+  yaxis = TRUE,
+  xaxis_fontsize = 10,
+  xlab_fontsize = 15,
+  y_fontsize = 15,
+  main_fontsize = 16,
+  start = 0.001,
+  yscale_change = TRUE,
+  pop_name = NULL,
+  xlab = "X",
+  ylab = "Information content",
+  col_line_split = "grey80",
+  addlogos = NULL,
+  addlogos_text = NULL,
+  newpage = TRUE,
+  control = list()
+)
 }
 \arguments{
 \item{table}{The input table (data frame or matrix) of counts across different
@@ -26,26 +43,26 @@ repesenting the heights of the logo stacked bars for each position/site/block.
 It defaults to NULL, in which case, the function computes the ic vector using
 the \code{ic_computer} functionality.}
 
-\item{color_profile}{A list containing two elements - "type" and "col". 
+\item{color_profile}{A list containing two elements - "type" and "col".
 The type can be of three types - "per-row", "per-column" and "per-symbol".
 The "col" element is a vector of colors, of same length as number of rows
-in table for "per-row" (assigning a color to each string), of same length 
-as number of columns in table for "per-column" (assuming a color for each 
-column), or a distinct color for a distinct symbol in "per-symbol". For 
-"per-symbol", the length of the \code{color_profile$col} should be same as 
-library size of the logos, but if the vector of colors provided is more or 
-less, we can downsample or upsample the colors as required. The colors 
+in table for "per-row" (assigning a color to each string), of same length
+as number of columns in table for "per-column" (assuming a color for each
+column), or a distinct color for a distinct symbol in "per-symbol". For
+"per-symbol", the length of the \code{color_profile$col} should be same as
+library size of the logos, but if the vector of colors provided is more or
+less, we can downsample or upsample the colors as required. The colors
 are matched with the symbols in the \code{total_chars}}
 
 \item{total_chars}{The total number of character symbols in the user library.
-The default is the default library provided by Logolas, but the user can 
+The default is the default library provided by Logolas, but the user can
 add symbols that he creates to this list.}
 
 \item{bg}{The background probability, which defaults to NULL, in which case
 equal probability is assigned to each symbol. The user can however specify a
 vector (equal to in length to the number of symbols) which specifies the
 background probability for each symbol and assumes this background probability
-to be the same across the columns (sites), or a matrix, whose each cell 
+to be the same across the columns (sites), or a matrix, whose each cell
 specifies the background probability of the symbols for each position.}
 
 \item{frame_width}{The width of the frames for individual site/postion/column
@@ -84,12 +101,12 @@ plot is created. Defaults to NULL when no population name is mentioned.}
 
 \item{ylab}{Y axis label}
 
-\item{col_line_split}{The color of the line split between the consecutive 
+\item{col_line_split}{The color of the line split between the consecutive
 groups or blocks}
 
 \item{addlogos}{Vector of additional logos/symbols defined by user}
 
-\item{addlogos_text}{Vector of the names given to the additional 
+\item{addlogos_text}{Vector of the names given to the additional
 logos/symbols defined by user.}
 
 \item{newpage}{if TRUE, plots the logo plot in a new page. Defaults to TRUE.}
@@ -118,7 +135,7 @@ each other to build the logo plot.
 \examples{
 
 cols = RColorBrewer::brewer.pal.info[RColorBrewer::brewer.pal.info$category == 'qual',]
-col_vector = unlist(mapply(RColorBrewer::brewer.pal, cols$maxcolors, 
+col_vector = unlist(mapply(RColorBrewer::brewer.pal, cols$maxcolors,
                          rownames(cols)))
 counts_mat <- rbind(c(0, 10, 100, 60, 20),
                    c(40, 30, 30, 35, 20),

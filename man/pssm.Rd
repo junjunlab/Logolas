@@ -6,7 +6,9 @@
 \title{Position specific scoring matrix data
 A dataset of position specific sores of various amino acids for the binding
 motif of the protein IPR006139 (Motif2, Start=257, Length=11).}
-\format{A matrix with 20 rows (amino acids) and 11 columns}
+\format{
+A matrix with 20 rows (amino acids) and 11 columns
+}
 \usage{
 pssm
 }

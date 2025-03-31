@@ -6,7 +6,9 @@
 \title{Counts of the aRxiv field categories of 4 UChicago Statistics professors.
 A dataset of compositional counts of 10 aRxiv field categories for 4 
 professors' publications in aRxiv.}
-\format{A matrix with 10 rows and 4 columns}
+\format{
+A matrix with 10 rows and 4 columns
+}
 \usage{
 aRxiv
 }

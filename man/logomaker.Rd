@@ -5,10 +5,21 @@
 \title{Create logo plots from aligned sequences or positional frequency
 (weight) matrix}
 \usage{
-logomaker(data, type = c("Logo", "EDLogo"), bg = NULL, n_data = NULL,
-  n_bg = NULL, tol = 0, shrink = TRUE, pseudocount = NULL,
-  color_type = NULL, colors = NULL, color_seed = NULL,
-  return_heights = FALSE, logo_control = list())
+logomaker(
+  data,
+  type = c("Logo", "EDLogo"),
+  bg = NULL,
+  n_data = NULL,
+  n_bg = NULL,
+  tol = 0,
+  shrink = TRUE,
+  pseudocount = NULL,
+  color_type = NULL,
+  colors = NULL,
+  color_seed = NULL,
+  return_heights = FALSE,
+  logo_control = list()
+)
 }
 \arguments{
 \item{data}{The input data may be a vector of character sequences -

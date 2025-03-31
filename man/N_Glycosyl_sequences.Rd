@@ -5,8 +5,10 @@
 \alias{N_Glycosyl_sequences}
 \title{Amino acid sequences from UniProt database that constitute N-glycosylation sites.
 The data has been fetched from UniProt website.}
-\format{A vector of sequences, with the glycosylation site at the center (usually N),
-and 5 bases on either side of it.}
+\format{
+A vector of sequences, with the glycosylation site at the center (usually N),
+and 5 bases on either side of it.
+}
 \usage{
 N_Glycosyl_sequences
 }

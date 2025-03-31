@@ -6,7 +6,9 @@
 \title{Proportional abundances of different bird species in the Himalayan mountains
 A dataset of proportional composition of 140 bird species in 3 regions of 
 the Himalayas.}
-\format{A matrix with 140 rows and 3 columns}
+\format{
+A matrix with 140 rows and 3 columns
+}
 \usage{
 himalayan_fauna
 }

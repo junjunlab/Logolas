@@ -4,8 +4,7 @@
 \alias{get_viewport_logo}
 \title{Function for creating a multi-panel logo viewport}
 \usage{
-get_viewport_logo(layout.rows, layout.cols, widths.val = 6,
-  heights.val = 20)
+get_viewport_logo(layout.rows, layout.cols, widths.val = 6, heights.val = 20)
 }
 \arguments{
 \item{layout.rows}{The number of rows in the panel}
