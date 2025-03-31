@@ -216,7 +216,7 @@ plogomaker <- function( table,
 
   if(inherits(table,"data.frame")){
     table <- as.matrix(table)
-  }else if (class(table) != "matrix"){
+  }else if (!inherits(table,"matrix")){
     stop("the table must be of class matrix or data.frame")
   }
 
